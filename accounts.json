@@ -2,5 +2,9 @@
     {
         "name": "testing",
         "secret": "JBSWY3DPEHPK3PXP"
+    },
+    {
+        "name": "apples",
+        "secret": "JBSWY3DPEHPK3PXS"
     }
 ]

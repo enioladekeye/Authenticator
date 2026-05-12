@@ -1,3 +1,5 @@
+#i don't understand any of this either so like probably don't touch it i think most of it is important
+
 import sys
 import pyotp
 import time
@@ -9,8 +11,12 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QVBoxLayout,
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QFontDatabase, QFont
 
-ACCOUNTS_FILE = "accounts.json"
 
+ACCOUNTS_FILE = "accounts.json" # hopefully this isnt too inconspicuously named
+
+# def is how you define a function in python, thats fun but i dont like it
+# idk man i miss c#- oh what i never thought i would say that ew
+# anyway i hope the function names are descriptive enough for whatever poor soul will need to read this in the future
 def load_accounts():
     if os.path.exists(ACCOUNTS_FILE):
         with open(ACCOUNTS_FILE, "r") as f:
@@ -21,6 +27,7 @@ def save_accounts(accounts):
     with open(ACCOUNTS_FILE, "w") as f:
         json.dump(accounts, f, indent=4)
 
+#should i have broken this into multiple files? probably. but will i? heheheheno. 
 class AddAccountDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
