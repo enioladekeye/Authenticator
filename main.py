@@ -77,6 +77,11 @@ class AccountCard(QWidget):
         top_row.addStretch()
         top_row.addWidget(delete_btn)
 
+        fullscreen_btn = QPushButton("⛶")
+        fullscreen_btn.setStyleSheet("color: white; border: none; font-size: 16px;")
+        fullscreen_btn.clicked.connect(self.open_fullscreen)
+        top_row.addWidget(fullscreen_btn)
+
         layout.addLayout(top_row)
         layout.addWidget(self.code_label)
         layout.addWidget(self.timer_label)
@@ -92,6 +97,54 @@ class AccountCard(QWidget):
         confirm = QMessageBox.question(self, "Delete", f"Delete {self.account['name']}?")
         if confirm == QMessageBox.StandardButton.Yes:
             self.on_delete(self.account)
+    def open_fullscreen(self):
+        self.fullscreen = FullscreenCard(self.account, self.code_label.font())
+        self.fullscreen.show()
+
+
+class FullscreenCard(QWidget):
+    def __init__(self, account, digital_font):
+        super().__init__()
+        self.totp = pyotp.TOTP(account["secret"])
+        self.setWindowTitle(account["name"])
+        self.showFullScreen()
+        self.setStyleSheet("background-color: #121212;")
+
+        layout = QVBoxLayout(self)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        name_label = QLabel(account["name"])
+        name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        name_label.setStyleSheet("font-size: 24px; color: #aaaaaa;")
+
+        self.code_label = QLabel()
+        self.code_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.code_label.setFont(digital_font)
+        self.code_label.setStyleSheet("color: #00ff99; letter-spacing: 8px;")
+
+        self.timer_label = QLabel()
+        self.timer_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.timer_label.setStyleSheet("font-size: 18px; color: #666666;")
+
+        close_btn = QPushButton("Exit Fullscreen")
+        close_btn.setStyleSheet("font-size: 14px; padding: 8px; background-color: #333; color: white; border-radius: 6px;")
+        close_btn.clicked.connect(self.close)
+
+        layout.addWidget(name_label)
+        layout.addWidget(self.code_label)
+        layout.addWidget(self.timer_label)
+        layout.addWidget(close_btn)
+
+        self.update_code()
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update_code)
+        self.timer.start(1000)
+
+    def update_code(self):
+        self.code_label.setText(self.totp.now())
+        remaining = 30 - (int(time.time()) % 30)
+        self.timer_label.setText(f"Refreshes in {remaining}s")
 
 class AuthApp(QMainWindow):
     def __init__(self):
