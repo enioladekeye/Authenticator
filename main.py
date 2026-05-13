@@ -1,5 +1,4 @@
 #i don't understand any of this either so like probably don't touch it i think most of it is important
-
 import sys
 import pyotp
 import time
@@ -16,6 +15,7 @@ ACCOUNTS_FILE = "accounts.json" # hopefully this isnt too inconspicuously named
 
 # def is how you define a function in python, thats fun but i dont like it
 # idk man i miss c#- oh what i never thought i would say that ew
+
 # anyway i hope the function names are descriptive enough for whatever poor soul will need to read this in the future
 def load_accounts():
     if os.path.exists(ACCOUNTS_FILE):
@@ -84,10 +84,10 @@ class AccountCard(QWidget):
         top_row.addStretch()
         top_row.addWidget(delete_btn)
 
-        fullscreen_btn = QPushButton("⛶")
-        fullscreen_btn.setStyleSheet("color: white; border: none; font-size: 16px;")
-        fullscreen_btn.clicked.connect(self.open_fullscreen)
-        top_row.addWidget(fullscreen_btn)
+        favourite_btn = QPushButton("⚝")
+        favourite_btn.setStyleSheet("color: white; border: none; font-size: 16px;")
+        #favourite_btn.clicked.connect(self.open_fullscreen)
+        top_row.addWidget(favourite_btn)
 
         layout.addLayout(top_row)
         layout.addWidget(self.code_label)
@@ -104,9 +104,6 @@ class AccountCard(QWidget):
         confirm = QMessageBox.question(self, "Delete", f"Delete {self.account['name']}?")
         if confirm == QMessageBox.StandardButton.Yes:
             self.on_delete(self.account)
-    def open_fullscreen(self):
-        self.fullscreen = FullscreenCard(self.account, self.code_label.font())
-        self.fullscreen.show()
 
 
 class FullscreenCard(QWidget):
@@ -176,6 +173,11 @@ class AuthApp(QMainWindow):
         add_btn.clicked.connect(self.add_account)
         main_layout.addWidget(add_btn)
 
+        fullscreen_btn = QPushButton("⛶")
+        fullscreen_btn.setStyleSheet("color: white; border: none; font-size: 16px;")
+        # fullscreen_btn.clicked.connect(self.open_fullscreen)
+        main_layout.addWidget(fullscreen_btn)
+
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet("border: none;")
@@ -223,6 +225,10 @@ class AuthApp(QMainWindow):
         self.accounts = [a for a in self.accounts if a != account]
         save_accounts(self.accounts)
         self.load_cards()
+        
+    #def open_fullscreen(self):
+    #    self.fullscreen = FullscreenCard(self.account, self.code_label.font())
+    #    self.fullscreen.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
