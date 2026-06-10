@@ -230,7 +230,8 @@ class AuthApp(QMainWindow):
         add_btn.clicked.connect(self.add_account)
         top_row.addWidget(add_btn)
 
-        fullscreen_btn = QPushButton("⛶ Favourites")
+
+        fullscreen_btn = QPushButton("⚝ Favourites")
         fullscreen_btn.setStyleSheet("font-size: 14px; padding: 8px; background-color: #333; color: white; border-radius: 6px;")
         fullscreen_btn.clicked.connect(self.open_fullscreen)
         top_row.addWidget(fullscreen_btn)
